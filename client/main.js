@@ -38,6 +38,12 @@ const enableAllSpaces = () => {
     })
 }
 
+// const updateGameboard = (move, player = COMPUTER_CHARACTER) => {
+//     let { row, col } = move;
+//     let gameSquare = document.querySelector(`div[data-cell-ref='${row}-${col}']`);
+//     gameSquare.textContent = player;
+// }
+
 ticTacToeBtns.forEach(button => {
     button.addEventListener('click', (e) => {
         let cellReference = e.target.parentNode.getAttribute('data-cell-ref');
@@ -56,14 +62,14 @@ ticTacToeBtns.forEach(button => {
         .then(res => {
             switch(res.data.status)
             {
-                case STATUS_COMPUTER_WINS:
-                    alert(res.data.message);
-                case STATUS_PLAYER_WINS:
-                    alert(res.data.message);
                 case STATUS_DRAW_GAME:
                     alert(res.data.message);
+                    break;
+                case STATUS_COMPUTER_WINS:
+                case STATUS_PLAYER_WINS:
+                    disableAllSpaces();
+                    alert(res.data.message);
                 case STATUS_GAME_ONGOING:
-                    console.log('STATUS ACCEPTED');
                     let { row, col } = res.data.lastMove;
                     let computerMove = document.querySelector(`div[data-cell-ref='${row}-${col}']`);
                     computerMove.textContent = COMPUTER_CHARACTER;

@@ -20,8 +20,6 @@ module.exports = {
         
         let isSpaceAvailable = gameboard.saveMove(row, col, character);
         let playerWins = gameboard.findWinner(TicTacToePlayer.OPPONENT_CHARACTER);
-        //console.log(isSpaceAvailable);
-        //console.log(playerWins);
 
         //if the player somehow selected a spot that has already been taken...
         if(!isSpaceAvailable){
@@ -32,7 +30,6 @@ module.exports = {
         //if the player's move wins the game...
         else if(playerWins)
         {
-            //res.status(200).send(`You won!`);
             let status = new GameSuccessStatus(GameSuccessStatus.STATUS_PLAYER_WINS, GameSuccessStatus.OUTCOME_PLAYER_WINS, { row, col });
             res.status(200).send(status);
             return;
@@ -43,7 +40,7 @@ module.exports = {
             let move = computerPlayer.makeMove(gameboard);
             if(move.row < 0 || move.col < 0)
             {
-                let status = new GameSuccessStatus(GameSuccessStatus.STATUS_DRAW_GAME, GameSuccessStatus.OUTCOME_DRAW, move);
+                let status = new GameSuccessStatus(GameSuccessStatus.STATUS_DRAW_GAME, GameSuccessStatus.OUTCOME_DRAW);
                 res.status(200).send(status);
                 return;
             }
