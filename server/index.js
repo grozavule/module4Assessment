@@ -14,5 +14,4 @@ app.get("/api/fortune", controller.getFortune);
 
 app.post('/api/tictactoe', tictactoeController.savePlayerMove);
 
-
 app.listen(4000, () => console.log("Server running on 4000"));

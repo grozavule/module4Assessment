@@ -1,87 +1,70 @@
-const COMPUTER_CHARACTER = 'O';
-const PLAYER_CHARACTER = 'X';
+let Gameboard = require('./classes/Gameboard');
+let TicTacToePlayer = require('./classes/TicTacToePlayer');
+let GameStatus = require('./classes/GameStatus');
+let GameSuccessStatus = require('./classes/GameSuccessStatus');
 
-// let gameboard = {
-//     a1: null,
-//     a2: null,
-//     a3: null,
-//     b1: null,
-//     b2: null,
-//     b3: null
-// }
-
-let gameboard = [
-    ['', '', ''],
-    ['', '', ''],
-    ['', '', '']
-];
+let gameboard = new Gameboard();
+let computerPlayer = new TicTacToePlayer(gameboard);
 
 const parseCellReference = reference => { 
     return { 
-        row: reference.charAt(0),
-        column: reference.charAt(2)
+        row: +reference.charAt(0),
+        col: +reference.charAt(2)
     }
-}
-
-const findWinner = character => {
-    return findVerticalWinner(character) || findHorizontalWinner(character) || findDiagonalWinner(character);
-}
-//object matrix winner functions
-// const findVerticalWinner = (character) => {
-//     return (gameboard.a1 === character && gameboard.b1 === character && gameboard.c1 === character)
-//     || (gameboard.a2 === character && gameboard.b2 === character && gameboard.c2 === character)
-//     || (gameboard.a3 === character && gameboard.b3 === character && gameboard.c3 === character)
-    
-// }
-
-// const findHorizontalWinner = (character) => {
-//     return (gameboard.a1 === character && gameboard.a2 === character && gameboard.a3 === character)
-//     || (gameboard.b1 === character && gameboard.b2 === character && gameboard.b3 === character)
-//     || (gameboard.c1 === character && gameboard.c2 === character && gameboard.c3 === character)
-// }
-
-// const findDiagonalWinner = (character) => {
-//     return (gameboard.a1 === character && gameboard.b2 === character && gameboard.c3 === character)
-//     || (gameboard.a3 === character && gameboard.b2 === character && gameboard.c1 === character);
-// }
-
-//multi-dimensional array winner functions
-const findVerticalWinner = (character) => {
-    return (gameboard[0][0] === character && gameboard[1][0] === character && gameboard[2][0] === character)
-    || (gameboard[0][1] === character && gameboard[1][1] === character && gameboard[2][1] === character)
-    || (gameboard[0][2] === character && gameboard[1][2] === character && gameboard[2][2] === character)
-    
-}
-
-const findHorizontalWinner = (character) => {
-    return (gameboard[0][0] === character && gameboard[0][1] === character && gameboard[0][2] === character)
-    || (gameboard[1][0] === character && gameboard[1][1] === character && gameboard[1][2] === character)
-    || (gameboard[2][0] === character && gameboard[2][1] === character && gameboard[2][2] === character)
-}
-
-const findDiagonalWinner = (character) => {
-    return (gameboard[0][0] === character && gameboard[1][1] === character && gameboard[2][2] === character)
-    || (gameboard[0][2] === character && gameboard[1][1] === character && gameboard[2][0] === character);
-}
-
-const makeComputerMove = () => {
-    
 }
 
 module.exports = {
     savePlayerMove: (req, res) => {
         let { cell, character } = req.body;
-        let ref = parseCellReference;
-        gameboard[ref.row][ref.column] = character;
+        let { row, col } = parseCellReference(cell);
         
-        if(findWinner(PLAYER_CHARACTER))
-        {
-            res.status(200).send(`You won!`);
+        let isSpaceAvailable = gameboard.saveMove(row, col, character);
+        let playerWins = gameboard.findWinner(TicTacToePlayer.OPPONENT_CHARACTER);
+        //console.log(isSpaceAvailable);
+        //console.log(playerWins);
+
+        //if the player somehow selected a spot that has already been taken...
+        if(!isSpaceAvailable){
+            console.log('tictactoeController.js - 26', gameboard);
+            res.status(400).send(GameStatus.ERROR_SPACE_ALREADY_TAKEN);
             return;
         }
+        //if the player's move wins the game...
+        else if(playerWins)
+        {
+            //res.status(200).send(`You won!`);
+            let status = new GameSuccessStatus(GameSuccessStatus.STATUS_PLAYER_WINS, GameSuccessStatus.OUTCOME_PLAYER_WINS, { row, col });
+            res.status(200).send(status);
+            return;
+        }
+        //otherwise, it is the computer's turn
         else
         {
-            makeComputerMove();
+            let move = computerPlayer.makeMove(gameboard);
+            if(move.row < 0 || move.col < 0)
+            {
+                let status = new GameSuccessStatus(GameSuccessStatus.STATUS_DRAW_GAME, GameSuccessStatus.OUTCOME_DRAW, move);
+                res.status(200).send(status);
+                return;
+            }
+            gameboard.saveMove(move.row, move.col, TicTacToePlayer.COMPUTER_CHARACTER);
+            console.log(gameboard);
+
+            //if the computer's last move won the game, return the move to the frontend 
+            //and send back a unique status to indicate that the game is over
+            if(gameboard.findWinner(TicTacToePlayer.COMPUTER_CHARACTER))
+            {
+                //res.status(207).send(move);
+                let status = new GameSuccessStatus(GameSuccessStatus.STATUS_COMPUTER_WINS, GameSuccessStatus.OUTCOME_COMPUTER_WINS, move);
+                res.status(200).send(status);
+                return;
+            }
+            //if neither the player nor the computer has won, return the computer's last move and keep playing
+            else
+            {
+                let status = new GameSuccessStatus(GameSuccessStatus.STATUS_GAME_ONGOING, GameSuccessStatus.OUTCOME_ONGOING, move);
+                res.status(200).send(status);
+            }
         }
     }
 }
