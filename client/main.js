@@ -42,17 +42,12 @@ const enableAllSpaces = () => {
     })
 }
 
-// const toggleAllSpaces = () => {
-//     ticTacToeBtns.forEach(btn => {
-//         btn.disabled = !btn.disabled;
-//     })
-// }
-
 const hideControlButtons = () => {
     controlBtns.classList.add('hidden');
 }
 
 const resetGameboard = () => {
+    controlBtns.classList.add('hidden');
     boardSpaces.forEach(space => {
         space.textContent = '';
         let button = document.createElement('button');
@@ -60,6 +55,12 @@ const resetGameboard = () => {
         button.addEventListener('click', savePlayerMove);
         space.appendChild(button);
     });
+}
+
+const saveComputerMove = move => {
+    let { row, col } = move;
+    let computerMove = document.querySelector(`div[data-cell-ref='${row}-${col}']`);
+    computerMove.textContent = COMPUTER_CHARACTER;
 }
 
 const savePlayerMove = (e) => {
@@ -80,18 +81,19 @@ const savePlayerMove = (e) => {
         switch(res.data.status)
         {
             case STATUS_DRAW_GAME:
-                showControlButtons();
-                alert(res.data.message);
-                break;
-            case STATUS_COMPUTER_WINS:
             case STATUS_PLAYER_WINS:
                 showControlButtons();
                 disableAllSpaces();
                 alert(res.data.message);
+                break;
+            case STATUS_COMPUTER_WINS:
+                saveComputerMove(res.data.lastMove);
+                disableAllSpaces();
+                showControlButtons();
+                alert(res.data.message);
+                break;
             case STATUS_GAME_ONGOING:
-                let { row, col } = res.data.lastMove;
-                let computerMove = document.querySelector(`div[data-cell-ref='${row}-${col}']`);
-                computerMove.textContent = COMPUTER_CHARACTER;
+                saveComputerMove(res.data.lastMove);
                 break;
         }
     })

@@ -1,60 +1,86 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <title>Back End Assessment</title>
     <link rel="stylesheet" href="./css/styles.css" />
-  </head>
-  <body class="container">
-    <button id="complimentButton">Get a compliment</button>
-    <button id="fortuneButton">Have your fortune told</button>
+</head>
+<body class="container">
+<button id="complimentButton">Get a compliment</button>
+<button id="fortuneButton">Have your fortune told</button>
 
-    <section id="tic-tac-toe">
-      <h1>Play Tic-Tac-Toe</h1>
-      <section class="instructions">
-        To play the game, click in the center of one of the boxes on the gameboard below.
-      </section>
-      <content id="tic-tac-toe-board">
-        <section class="ttt-board-row">
-          <div id="a1" data-cell-ref="0-0" class="ttt-board-cell">
-            <button class="ttt-board-space"></button>
-          </div>
-          <div id="a2" data-cell-ref="0-1" class="ttt-board-cell">
-            <button class="ttt-board-space"></button>
-          </div>
-          <div id="a3" data-cell-ref="0-2" class="ttt-board-cell">
-            <button class="ttt-board-space"></button>
-          </div>
-        </section>
-        <section class="ttt-board-row">
-          <div id="b1" data-cell-ref="1-0" class="ttt-board-cell">
-            <button class="ttt-board-space"></button>
-          </div>
-          <div id="b2" data-cell-ref="1-1" class="ttt-board-cell">
-            <button class="ttt-board-space"></button>
-          </div>
-          <div id="b3" data-cell-ref="1-2" class="ttt-board-cell">
-            <button class="ttt-board-space"></button>
-          </div>
-        </section>
-        <section class="ttt-board-row">
-          <div id="c1" data-cell-ref="2-0" class="ttt-board-cell">
-            <button class="ttt-board-space"></button>
-          </div>
-          <div id="c2" data-cell-ref="2-1" class="ttt-board-cell">
-            <button class="ttt-board-space"></button>
-          </div>
-          <div id="c3" data-cell-ref="2-2" class="ttt-board-cell">
-            <button class="ttt-board-space"></button>
-          </div>
-        </section>
-      </content>
-      <div id="control-buttons" class="hidden">
-        <button class="text-button" id="btn-start-over">Start Over</button>
-      </div>
-    </div>
+<div id="activities-container">
+    <!--// START: TIC-TAC-TOE //-->
+    <section id="tic-tac-toe" class="activity">
+        <h1>Tic-Tac-Toe</h1>
+        <p class="instructions">
+            To play the game, click in the center of one of the boxes on the gameboard below.
+        </p>
+        <content id="tic-tac-toe-board">
+            <section class="ttt-board-row">
+                <div id="a1" data-cell-ref="0-0" class="ttt-board-cell">
+                    <button class="ttt-board-space"></button>
+                </div>
+                <div id="a2" data-cell-ref="0-1" class="ttt-board-cell">
+                    <button class="ttt-board-space"></button>
+                </div>
+                <div id="a3" data-cell-ref="0-2" class="ttt-board-cell">
+                    <button class="ttt-board-space"></button>
+                </div>
+            </section>
+            <section class="ttt-board-row">
+                <div id="b1" data-cell-ref="1-0" class="ttt-board-cell">
+                    <button class="ttt-board-space"></button>
+                </div>
+                <div id="b2" data-cell-ref="1-1" class="ttt-board-cell">
+                    <button class="ttt-board-space"></button>
+                </div>
+                <div id="b3" data-cell-ref="1-2" class="ttt-board-cell">
+                    <button class="ttt-board-space"></button>
+                </div>
+            </section>
+            <section class="ttt-board-row">
+                <div id="c1" data-cell-ref="2-0" class="ttt-board-cell">
+                    <button class="ttt-board-space"></button>
+                </div>
+                <div id="c2" data-cell-ref="2-1" class="ttt-board-cell">
+                    <button class="ttt-board-space"></button>
+                </div>
+                <div id="c3" data-cell-ref="2-2" class="ttt-board-cell">
+                    <button class="ttt-board-space"></button>
+                </div>
+            </section>
+        </content>
+        <div id="control-buttons" class="hidden">
+            <button class="text-button" id="btn-start-over">Start Over</button>
+        </div>
+    </section>
+    <!--// END: TIC-TAC-TOE //-->
+    <!--// BEGIN: PAPER-ROCK-SCISSORS-LIZARD-SPOCK //-->
+    <!--
+    <section id="prsls" class="activity">
+        <h1>PAPER-ROCK-SCISSORS-LIZARD-SPOCK</h1>
+        <p class="instructions">
+            This game was created by internet pioneer, Sam Kass, as an improvement on the classic game, Rock-Paper-Scissors.<br/>
+            All hail Sam Kass.
+        </p>
+        <ul>
+            <li>Scissors cuts Paper,</li>
+            <li>Paper covers Rock,</li>
+            <li>Rock crushes Lizard,</li>
+            <li>Lizard poisons Spock,</li>
+            <li>Spock smashes Scissors,</li>
+            <li>Scissors decapitates Lizard,</li>
+            <li>Lizard eats Paper,</li>
+            <li>Paper disproves Spock,</li>
+            <li>Spock vaporizes Rock,</li>
+            <li>, and, as it always has, Rock crushes Scissors.</li>
+        </ul>
+    </section>
+    -->
+</div>
 
-    <!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script> -->
-    <script src="../node_modules/axios/dist/axios.min.js"></script>
-    <script src="main.js"></script>
-  </body>
+<!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script> -->
+<script src="../node_modules/axios/dist/axios.min.js"></script>
+<script src="main.js"></script>
+</body>
 </html>
