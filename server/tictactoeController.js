@@ -59,9 +59,14 @@ module.exports = {
             //if neither the player nor the computer has won, return the computer's last move and keep playing
             else
             {
-                let status = new GameSuccessStatus(GameSuccessStatus.STATUS_GAME_ONGOING, GameSuccessStatus.OUTCOME_ONGOING, move);
+                let status = new GameSuccessStatus(GameSuccessStatus.STATUS_GAME_ONGOING, ``, move);
                 res.status(200).send(status);
             }
         }
+    },
+    startGameOver: (req, res) => {
+        gameboard.clearBoard();
+        let status = new GameSuccessStatus(GameSuccessStatus.STATUS_GAME_RESTARTED, ``);
+        res.status(200).send(status);
     }
 }

@@ -7,6 +7,14 @@ class Gameboard {
         ];
     }
 
+    clearBoard(){
+        this.squares = [
+            ['', '', ''],
+            ['', '', ''],
+            ['', '', '']
+        ];
+    }
+
     //this will only be invoked to clear hypothetical moves made while analyzing the gameboard
     //or when resetting the gameboard for a new game
     clearMove(row, col){

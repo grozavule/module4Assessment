@@ -1,9 +1,8 @@
-* {
-    box-sizing: border-box;
-}
+* { box-sizing: border-box; }
+.hidden { display:none; }
+
 #tic-tac-toe { border-radius:20px;background:#f2f2f2;padding:25px;text-align:center; }
 #tic-tac-toe h1 { text-align:center; }
-
 #tic-tac-toe-board { width:500px;height:500px;margin:25px auto;display:flex;flex-direction:column;align-items:center;align-content:center; }
 .ttt-board-row { display:flex;flex-direction:row; }
 .ttt-board-row:not(:last-child) { border-bottom:1px solid #000000; }

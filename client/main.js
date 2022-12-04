@@ -7,11 +7,14 @@ const STATUS_PLAYER_WINS = 1;
 const STATUS_COMPUTER_WINS = 2;
 const STATUS_DRAW_GAME = 3;
 const STATUS_GAME_ONGOING = 4;
+const STATUS_GAME_RESTARTED = 5;
 
-const complimentBtn = document.getElementById("complimentButton")
-const fortuneBtn = document.getElementById("fortuneButton")
+const complimentBtn = document.getElementById("complimentButton");
+const fortuneBtn = document.getElementById("fortuneButton");
+const boardSpaces = document.querySelectorAll('.ttt-board-cell');
 const ticTacToeBtns = document.querySelectorAll('.ttt-board-space');
-
+const controlBtns = document.querySelector('#control-buttons');
+const startOverBtn = document.querySelector('#btn-start-over');
 
 const getCompliment = () => {
     axios.get("http://localhost:4000/api/compliment/")
@@ -27,6 +30,7 @@ const getFortune = () => {
             alert(data);
     });
 };
+
 const disableAllSpaces = () => {
     ticTacToeBtns.forEach(btn => {
         btn.disabled = true;
@@ -34,55 +38,86 @@ const disableAllSpaces = () => {
 };
 const enableAllSpaces = () => {
     ticTacToeBtns.forEach(btn => {
-        btn.disabled = false;
+        btn.removeAttribute('disabled');
     })
 }
 
-// const updateGameboard = (move, player = COMPUTER_CHARACTER) => {
-//     let { row, col } = move;
-//     let gameSquare = document.querySelector(`div[data-cell-ref='${row}-${col}']`);
-//     gameSquare.textContent = player;
+// const toggleAllSpaces = () => {
+//     ticTacToeBtns.forEach(btn => {
+//         btn.disabled = !btn.disabled;
+//     })
 // }
 
-ticTacToeBtns.forEach(button => {
-    button.addEventListener('click', (e) => {
-        let cellReference = e.target.parentNode.getAttribute('data-cell-ref');
+const hideControlButtons = () => {
+    controlBtns.classList.add('hidden');
+}
 
-        let cell = e.target.parentNode;
-        cell.textContent = PLAYER_CHARACTER;
+const resetGameboard = () => {
+    boardSpaces.forEach(space => {
+        space.textContent = '';
+        let button = document.createElement('button');
+        button.classList.add('ttt-board-space');
+        button.addEventListener('click', savePlayerMove);
+        space.appendChild(button);
+    });
+}
 
-        let move = {
-            'cell': cellReference,
-            'character': PLAYER_CHARACTER
+const savePlayerMove = (e) => {
+    let cellReference = e.target.parentNode.getAttribute('data-cell-ref');
+
+    let cell = e.target.parentNode;
+    cell.textContent = PLAYER_CHARACTER;
+
+    let move = {
+        'cell': cellReference,
+        'character': PLAYER_CHARACTER
+    }
+
+    //makes a post call to the server to save the player's move
+    //in response, the server should send back the computer's move
+    axios.post(`${BASE_URL}/api/tictactoe`, move)
+    .then(res => {
+        switch(res.data.status)
+        {
+            case STATUS_DRAW_GAME:
+                showControlButtons();
+                alert(res.data.message);
+                break;
+            case STATUS_COMPUTER_WINS:
+            case STATUS_PLAYER_WINS:
+                showControlButtons();
+                disableAllSpaces();
+                alert(res.data.message);
+            case STATUS_GAME_ONGOING:
+                let { row, col } = res.data.lastMove;
+                let computerMove = document.querySelector(`div[data-cell-ref='${row}-${col}']`);
+                computerMove.textContent = COMPUTER_CHARACTER;
+                break;
         }
-
-        //makes a post call to the server to save the player's move
-        //in response, the server should send back the computer's move
-        axios.post(`${BASE_URL}/api/tictactoe`, move)
-        .then(res => {
-            switch(res.data.status)
-            {
-                case STATUS_DRAW_GAME:
-                    alert(res.data.message);
-                    break;
-                case STATUS_COMPUTER_WINS:
-                case STATUS_PLAYER_WINS:
-                    disableAllSpaces();
-                    alert(res.data.message);
-                case STATUS_GAME_ONGOING:
-                    let { row, col } = res.data.lastMove;
-                    let computerMove = document.querySelector(`div[data-cell-ref='${row}-${col}']`);
-                    computerMove.textContent = COMPUTER_CHARACTER;
-                    break;
-            }
-        })
-        .catch(error => {
-            //alert(error.response.data);
-            console.log(error);
-        });
-        
     })
-})
+    .catch(error => {        
+        console.log(error);
+    });
+}
+
+const showControlButtons = () => {
+    controlBtns.classList.remove('hidden');
+}
+
+const startGameOver = () => {
+    axios.delete(`${BASE_URL}/api/tictactoe`)
+    .then(res => {
+        resetGameboard();
+    })
+    .catch(error => {
+        console.log(error);
+    });
+}
+
+ticTacToeBtns.forEach(button => {
+    button.addEventListener('click', savePlayerMove);
+});
 
 complimentBtn.addEventListener('click', getCompliment);
 fortuneBtn.addEventListener('click', getFortune);
+startOverBtn.addEventListener('click', startGameOver);
