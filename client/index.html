@@ -77,10 +77,27 @@
         </ul>
     </section>
     -->
+    <!--// START: MADLIBS //-->
+    <section id="madlibs" class="activity">
+        <h1>Mad Libs</h1>
+        <p class="instructions">Choose a story from the drop-down list below, and provide a word that fits the prompt you'll be provided.</p>
+
+        <form name="madlib-selector">
+            <label for="stories">Available Stories</label>
+            <select name="stories" id="stories">
+                <option value="dear-santa">Dear Santa</option>
+                <option value="going-to-grandmas">Going to Grandma's</option>
+            </select>
+            <input type="submit" value="Start" />
+        </form>
+        <div id="madlib-container"></div>
+    </section>
+    <!--// END: MADLIBS //-->
 </div>
 
 <!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script> -->
 <script src="../node_modules/axios/dist/axios.min.js"></script>
 <script src="main.js"></script>
+<script src="madlibs.js"></script>
 </body>
 </html>
