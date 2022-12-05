@@ -1,4 +1,4 @@
-const form = document.querySelector('form[name=madlib-selector]');
+const madlibForm = document.querySelector('form[name=madlib-selector]');
 let madlibInput = document.querySelector('#stories');
 const madlibContainer = document.querySelector('#madlib-container');
 
@@ -10,12 +10,12 @@ const submitMadlib = e => {
     let form = e.target;
     for(const elem of form.elements)
     {
-        //console.log(elem);
         if(elem.tagName === 'INPUT' && elem.type !== 'submit')
         {
             let answer = {
+                "id": elem.name.substring(elem.name.indexOf('-')),
                 "type": elem.name.substring(0, elem.name.indexOf('-')),
-                "value": elem.value 
+                "value": elem.value
             };
             madlibResponses.push(answer);
         }
@@ -23,7 +23,6 @@ const submitMadlib = e => {
 
     axios.post(`${BASE_URL}/api/madlibs/${madlib}/answers`, madlibResponses)
     .then(res => {
-        //console.log(res.data);
         madlibContainer.innerHTML = res.data.madlib;
     })
     .catch(error => {
@@ -31,7 +30,7 @@ const submitMadlib = e => {
     });
 }
 
-form.addEventListener('submit', e => {
+madlibForm.addEventListener('submit', e => {
     e.preventDefault();
     madlib = madlibInput.value;
     

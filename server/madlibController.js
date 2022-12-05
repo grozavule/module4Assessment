@@ -1,3 +1,5 @@
+let madlibAnswers = {};
+
 const getMadlib = tag => {
     switch(tag)
     {
@@ -33,8 +35,8 @@ module.exports = {
         if(madlibObj.text)
         {
             let updatedMadlibText = madlibObj.text;
+            madlibAnswers = req.body;
             req.body.forEach(answer => {
-                console.log(`{${answer.type}}`);
                 updatedMadlibText = updatedMadlibText.replace(`{${answer.type}}`, answer.value);
                 updatedMadlibText = updatedMadlibText.replaceAll('\n', '<br/>');
             });

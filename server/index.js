@@ -9,10 +9,16 @@ app.use(express.json());
 const controller = require('./controller')
 const tictactoeController = require('./tictactoeController');
 const madlibController = require('./madlibController');
+const introductionController = require('./introductionController');
 
 //default routes
 app.get("/api/compliment", controller.getCompliment);
 app.get("/api/fortune", controller.getFortune);
+
+//introduction routes
+app.get('/api/introduction', introductionController.getName);
+app.post('/api/introduction', introductionController.saveName);
+app.put('/api/introduction', introductionController.updateName);
 
 //tic-tac-toe routes
 app.post('/api/tictactoe', tictactoeController.savePlayerMove);

@@ -8,6 +8,14 @@
 <button id="complimentButton">Get a compliment</button>
 <button id="fortuneButton">Have your fortune told</button>
 
+<section id="introduction">
+    <form name="introduction" id="introduction-form">
+        <label for="name">Tell me your name</label>
+        <input type="text" name="name" id="name" required/>
+        <input type="submit" value="Send" />
+    </form>
+</section>
+
 <div id="activities-container">
     <!--// START: TIC-TAC-TOE //-->
     <section id="tic-tac-toe" class="activity">
@@ -55,28 +63,6 @@
         </div>
     </section>
     <!--// END: TIC-TAC-TOE //-->
-    <!--// BEGIN: PAPER-ROCK-SCISSORS-LIZARD-SPOCK //-->
-    <!--
-    <section id="prsls" class="activity">
-        <h1>PAPER-ROCK-SCISSORS-LIZARD-SPOCK</h1>
-        <p class="instructions">
-            This game was created by internet pioneer, Sam Kass, as an improvement on the classic game, Rock-Paper-Scissors.<br/>
-            All hail Sam Kass.
-        </p>
-        <ul>
-            <li>Scissors cuts Paper,</li>
-            <li>Paper covers Rock,</li>
-            <li>Rock crushes Lizard,</li>
-            <li>Lizard poisons Spock,</li>
-            <li>Spock smashes Scissors,</li>
-            <li>Scissors decapitates Lizard,</li>
-            <li>Lizard eats Paper,</li>
-            <li>Paper disproves Spock,</li>
-            <li>Spock vaporizes Rock,</li>
-            <li>, and, as it always has, Rock crushes Scissors.</li>
-        </ul>
-    </section>
-    -->
     <!--// START: MADLIBS //-->
     <section id="madlibs" class="activity">
         <h1>Mad Libs</h1>
@@ -98,6 +84,7 @@
 <!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script> -->
 <script src="../node_modules/axios/dist/axios.min.js"></script>
 <script src="main.js"></script>
+<script src="introduction.js"></script>
 <script src="madlibs.js"></script>
 </body>
 </html>
